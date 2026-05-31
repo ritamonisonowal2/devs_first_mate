@@ -7,7 +7,7 @@ from collections import defaultdict
 
 load_dotenv()
 
-app = Flask(_name_, static_folder='static')
+app = Flask(__name__, static_folder='static')
 
 GITHUB_USER   = os.getenv('GITHUB_USERNAME', 'mauryasagar')
 GITHUB_REPO   = os.getenv('GITHUB_REPO', 'devs_first_mate')
