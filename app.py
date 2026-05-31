@@ -26,6 +26,6 @@ def health():
     return jsonify({'status': 'ok', 'github_user': GITHUB_USER, 'repo': GITHUB_REPO})
 
 
-if name == '__main__':
+if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
     app.run(debug=False, host='0.0.0.0', port=port)
