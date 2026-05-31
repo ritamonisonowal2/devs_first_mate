@@ -12,6 +12,7 @@ app = Flask(__name__, static_folder='.')
 GITHUB_USER   = os.getenv('GITHUB_USERNAME', 'mauryasagar')
 GITHUB_REPO   = os.getenv('GITHUB_REPO', 'devs_first_mate')
 SLACK_CHANNEL = os.getenv('SLACK_CHANNEL_ID', 'YOUR_CHANNEL_ID')
+GITHUB_TOKEN = os.getenv('GITHUB_TOKEN', '')
 
 
 
