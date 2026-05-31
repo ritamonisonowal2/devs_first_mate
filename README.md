@@ -111,8 +111,7 @@ LIMIT 10
 | | |
 |---|---|
 | 🌐 Live App | https://devs-first-mate.onrender.com |
-| 📦 GitHub (Sagar) | https://github.com/mauryasagar/devs_first_mate |
-| 📦 GitHub (Disha) | https://github.com/ritamonisonowal2/devs_first_mate |
+| 📦 GitHub (Hackathon Project) | https://github.com/mauryasagar/devs_first_mate |
 | ⭐️ Star Coral | https://git.new/coral-wemakedevs-may26 |
 
 ---
