@@ -117,7 +117,7 @@ LIMIT 10
 ---
 
 ## 🏃 Run Locally
-
+```
 # 1. Clone the repo
 git clone https://github.com/mauryasagar/devs_first_mate
 cd devs_first_mate
@@ -136,6 +136,7 @@ pip install -r requirements.txt
 
 # 5. Run the app
 python app.py
+```
 
 ---
 
