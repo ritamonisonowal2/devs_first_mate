@@ -8,7 +8,7 @@
 [![Flask Backend](https://img.shields.io/badge/Flask-Backend-black?logo=flask)](https://flask.palletsprojects.com)
 [![Deployed on Render](https://img.shields.io/badge/Deployed_on-Render-46E3B7?logo=render)](https://render.com)
 
-> *"What needs my attention today?"* — answered in one shot by joining GitHub and Slack through Coral (https://git.new/coral-wemakedevs-may26)'s unified SQL runtime.
+> *"What needs my attention today?"* — answered in one shot by joining GitHub through Coral (https://git.new/coral-wemakedevs-may26)'s unified SQL runtime.
 
 ---
 
@@ -23,7 +23,7 @@
 
 ## 🎯 The Problem
 
-Developers context-switch constantly — GitHub for issues and PRs, Slack for team discussions. There's no single place that says *"here's what actually matters right now."* Every tool requires separate logins, separate queries, and mental stitching.
+Developers context-switch constantly — GitHub for issues and PRs. There's no single place that says *"here's what actually matters right now."* Every tool requires separate logins, separate queries, and mental stitching.
 
 ---
 
@@ -32,7 +32,6 @@ Developers context-switch constantly — GitHub for issues and PRs, Slack for te
 - 🐛 Triages open GitHub issues — ordered by recency so nothing falls through
 - 🔁 Detects duplicate issues — using keyword matching to cut noise
 - ✅ Drafts release notes — auto-generated from merged PRs
-- 💬 Shows Slack activity — recent channel messages in context
 - ⚡️ Cross-source JOIN — GitHub + Slack answered in one Coral SQL query
 - 🤖 MCP Integration — AI agents can query your data directly via Coral's MCP server
 
@@ -58,7 +57,7 @@ Developers context-switch constantly — GitHub for issues and PRs, Slack for te
 
 | Feature | How We Used It |
 |---|---|
-| SQL Interface | coral sql "SELECT ..." to query GitHub & Slack |
+| SQL Interface | coral sql "SELECT ..." to query GitHub |
 | Cross-source JOIN | FROM github.issues JOIN slack.messages in a single query |
 | Schema Learning | SELECT * FROM coral.tables to discover available data |
 | MCP Server | coral mcp to expose data to AI agents |
