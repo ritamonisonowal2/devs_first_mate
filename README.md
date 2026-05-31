@@ -16,8 +16,8 @@
 
 | Member | GitHub |
 |---|---|
-| Sagar Maurya | @mauryasagar (https://github.com/mauryasagar) |
-| Disha Sonowal | @ritamonisonowal2 (https://github.com/ritamonisonowal2) |
+| Sagar Maurya | [@mauryasagar](https://github.com/mauryasagar) |
+| Disha Sonowal | [@ritamonisonowal2](https://github.com/ritamonisonowal2) |
 
 ---
 
