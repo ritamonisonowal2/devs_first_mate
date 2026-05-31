@@ -1,576 +1,349 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🏴‍☠️ Dev's First Mate</title>
+<title>Dev's First Mate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap');
+[data-theme="dark"]{
+  --bg:#07080c;--s0:#0d0f17;--s1:#11141d;--s2:#171a24;--s3:#1d2030;
+  --border:rgba(255,255,255,.055);--border2:rgba(255,255,255,.1);--border3:rgba(255,255,255,.17);
+  --gold:#c8a94e;--gold2:#edd070;--gdim:rgba(200,169,78,.11);--gglow:rgba(200,169,78,.2);
+  --cyan:#52c5d5;--violet:#9879f0;--text:#edf0ff;--sub:#7a88a2;--dim:#3a4558;
+  --ok:#3dd68c;--err:#f06c6c;
+  --swbg:#1c1f2a;--swthumb:#c8a94e;
+  --a1:rgba(152,121,240,.05);--a2:rgba(82,197,213,.04);--a3:rgba(200,169,78,.03);
+  --chb:rgba(200,169,78,.18);--overlay:rgba(7,8,12,.7);
+  --panel-bg:#0d0f17;
+}
+[data-theme="light"]{
+  --bg:#f2f0eb;--s0:#ffffff;--s1:#f8f6f2;--s2:#eeebe5;--s3:#e4e0d8;
+  --border:rgba(0,0,0,.07);--border2:rgba(0,0,0,.11);--border3:rgba(0,0,0,.16);
+  --gold:#8a6b18;--gold2:#b08820;--gdim:rgba(138,107,24,.09);--gglow:rgba(138,107,24,.22);
+  --cyan:#1a7e8f;--violet:#5535b5;--text:#121016;--sub:#58546a;--dim:#a09cb0;
+  --ok:#177a4e;--err:#b83232;
+  --swbg:#ddd9d2;--swthumb:#8a6b18;
+  --a1:rgba(152,121,240,.035);--a2:rgba(82,197,213,.03);--a3:rgba(200,169,78,.035);
+  --chb:rgba(138,107,24,.22);--overlay:rgba(242,240,235,.75);
+  --panel-bg:#ffffff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s}
 
-  :root {
-    --bg: #0A1628;
-    --surface: #111f38;
-    --surface2: #1a2d4a;
-    --accent: #F5A623;
-    --accent2: #00B4D8;
-    --accent3: #7C3AED;
-    --text: #e8f0fe;
-    --muted: #7a90b0;
-    --danger: #ef4444;
-    --success: #22c55e;
-    --border: rgba(245,166,35,0.18);
-  }
+/* AMBIENT */
+.amb{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.a1{position:absolute;width:800px;height:800px;top:-250px;left:-180px;background:radial-gradient(circle,var(--a1) 0%,transparent 62%);transition:background .3s}
+.a2{position:absolute;width:650px;height:650px;bottom:-180px;right:-120px;background:radial-gradient(circle,var(--a2) 0%,transparent 62%);transition:background .3s}
+.a3{position:absolute;width:450px;height:450px;top:38%;left:52%;background:radial-gradient(circle,var(--a3) 0%,transparent 62%);transition:background .3s}
+[data-theme="dark"] .noise{position:absolute;inset:0;opacity:.02;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:128px}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+/* NAV */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:22px 36px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;background:var(--bg);backdrop-filter:blur(12px);transition:background .3s,border-color .3s}
+.nav-left{display:flex;align-items:center;gap:11px}
+.lmark{width:34px;height:34px;border-radius:9px;border:1px solid rgba(200,169,78,.28);background:var(--gdim);display:flex;align-items:center;justify-content:center;font-size:16px;transition:all .3s}
+.brand{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2.5px;color:var(--gold);text-transform:uppercase;opacity:.8;transition:color .3s}
+.nav-right{display:flex;align-items:center;gap:12px}
+.spill{display:flex;align-items:center;gap:6px;padding:5px 13px;border:1px solid var(--border2);border-radius:20px;font-size:11px;font-family:'DM Mono',monospace;color:var(--sub);transition:all .3s}
+.pulse{width:5px;height:5px;border-radius:50%;background:var(--ok);box-shadow:0 0 6px var(--ok);animation:blink 2.2s ease infinite}
+@keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.7)}}
+.tsw{display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
+.tsw-lbl{font-family:'DM Mono',monospace;font-size:11px;color:var(--sub);transition:color .3s;min-width:18px;text-align:center}
+.trk{position:relative;width:46px;height:25px;background:var(--swbg);border:1.5px solid var(--border3);border-radius:13px;transition:background .3s,border-color .3s;flex-shrink:0}
+.tthumb{position:absolute;top:3px;left:3px;width:17px;height:17px;border-radius:50%;background:var(--swthumb);transition:transform .3s cubic-bezier(.34,1.56,.64,1),background .3s;display:flex;align-items:center;justify-content:center;font-size:9px;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+[data-theme="light"] .tthumb{transform:translateX(21px)}
 
-  body {
-    font-family: 'Syne', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    padding: 0;
-    overflow-x: hidden;
-  }
+/* ── VIEW SYSTEM ── */
+.view{display:none;position:relative;z-index:1}
+.view.active{display:block}
 
-  /* Animated background */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 80% 40% at 20% 10%, rgba(0,180,216,0.07) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 50% at 80% 80%, rgba(124,58,237,0.07) 0%, transparent 60%),
-      radial-gradient(ellipse 50% 60% at 50% 50%, rgba(245,166,35,0.04) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
-  }
+/* ── DASHBOARD (view 1) ── */
+#dash{padding:64px 36px 100px;max-width:960px;margin:0 auto}
+.hero{max-width:680px;margin-bottom:0;animation:slideDown .55s ease both}
+.kicker{display:flex;align-items:center;gap:10px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);opacity:.7;margin-bottom:22px;transition:color .3s}
+.kl{width:26px;height:1px;background:var(--gold);opacity:.5}
+h1{font-family:'Instrument Serif',serif;font-size:clamp(3rem,7vw,5rem);font-weight:400;line-height:1.02;letter-spacing:-2px;margin-bottom:18px;color:var(--text);transition:color .3s}
+h1 em{font-style:italic;background:linear-gradient(115deg,var(--gold) 0%,var(--gold2) 42%,var(--cyan) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hdesc{font-size:16px;color:var(--sub);line-height:1.72;max-width:520px;transition:color .3s}
 
-  .container {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 40px 24px 80px;
-    position: relative;
-    z-index: 1;
-  }
+/* STAT CARDS */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:52px 0 40px;animation:fadeUp .6s .1s ease both;opacity:0;animation-fill-mode:forwards}
+.scard{background:var(--s0);border:1px solid var(--border);border-radius:12px;padding:22px 20px;cursor:default;transition:all .2s;position:relative;overflow:hidden}
+.scard::before{content:'';position:absolute;inset:0;opacity:0;background:var(--gdim);transition:opacity .2s}
+.scard:hover::before{opacity:1}
+.scard:hover{border-color:var(--border2);transform:translateY(-2px)}
+.scard-ico{font-size:20px;margin-bottom:14px;display:block}
+.scard-val{font-family:'Instrument Serif',serif;font-size:2.2rem;color:var(--gold);line-height:1;margin-bottom:6px;transition:color .3s}
+.scard-lbl{font-family:'DM Mono',monospace;font-size:10px;color:var(--dim);letter-spacing:1.5px;text-transform:uppercase;transition:color .3s}
+.scard-sub{font-size:11px;color:var(--dim);margin-top:4px;font-family:'DM Mono',monospace;transition:color .3s}
 
-  /* Header */
-  header {
-    text-align: center;
-    margin-bottom: 48px;
-    animation: fadeDown 0.6s ease both;
-  }
+/* DIVIDER */
+.div{height:1px;background:linear-gradient(90deg,transparent,var(--border2) 40%,var(--border2) 60%,transparent);margin:0 0 40px}
 
-  .logo {
-    font-size: 13px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--accent);
-    font-family: 'Space Mono', monospace;
-    margin-bottom: 12px;
-    opacity: 0.85;
-  }
+/* CTA AREA */
+.cta-area{display:flex;align-items:center;gap:20px;flex-wrap:wrap;animation:fadeUp .6s .2s ease both;opacity:0;animation-fill-mode:forwards}
+.btn-main{display:inline-flex;align-items:center;gap:10px;padding:15px 32px;border-radius:9px;border:none;cursor:pointer;background:var(--gold);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;letter-spacing:.1px;transition:all .22s;position:relative;overflow:hidden;flex-shrink:0}
+.btn-main::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.18) 0%,transparent 55%);pointer-events:none}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 12px 38px var(--gglow);filter:brightness(1.07)}
+.btn-main:active{transform:none;filter:none}
+.btn-main.loading{opacity:.5;pointer-events:none}
+.cta-note{display:flex;flex-direction:column;gap:3px}
+.cta-note span{font-size:11.5px;color:var(--dim);font-family:'DM Mono',monospace;transition:color .3s}
 
-  h1 {
-    font-size: clamp(2rem, 5vw, 3.2rem);
-    font-weight: 800;
-    line-height: 1.1;
-    background: linear-gradient(135deg, #F5A623 0%, #ffcf6b 40%, #00B4D8 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 12px;
-  }
+/* STATUS */
+#sbar{display:none;align-items:center;gap:10px;padding:11px 18px;border-radius:7px;border:1px solid rgba(82,197,213,.13);background:rgba(82,197,213,.04);margin:20px 0 0;font-family:'DM Mono',monospace;font-size:12px;color:var(--cyan)}
+#sbar.on{display:flex}
+.spin{width:13px;height:13px;border:1.5px solid rgba(82,197,213,.2);border-top-color:var(--cyan);border-radius:50%;animation:rot .65s linear infinite;flex-shrink:0}
+@keyframes rot{to{transform:rotate(360deg)}}
 
-  .subtitle {
-    color: var(--muted);
-    font-size: 15px;
-    font-family: 'Space Mono', monospace;
-  }
+/* FEATURE ROW */
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:60px;animation:fadeUp .6s .3s ease both;opacity:0;animation-fill-mode:forwards}
+.feat{background:var(--s0);border:1px solid var(--border);border-radius:10px;padding:20px;transition:all .2s}
+.feat:hover{border-color:var(--border2);transform:translateY(-1px)}
+.feat-ico{font-size:22px;margin-bottom:12px}
+.feat-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px;transition:color .3s}
+.feat-desc{font-size:12px;color:var(--sub);line-height:1.6;font-family:'DM Mono',monospace;transition:color .3s}
 
-  /* CTA Button */
-  .cta-wrap {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 44px;
-    animation: fadeUp 0.7s 0.2s ease both;
-  }
+/* ── DETAIL VIEW (view 2) ── */
+#detail{padding:0 0 100px}
+.detail-nav{display:flex;align-items:center;gap:14px;padding:24px 36px;border-bottom:1px solid var(--border);background:var(--s0);transition:all .3s}
+.back-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:7px;border:1px solid var(--border2);background:transparent;color:var(--sub);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all .18s}
+.back-btn:hover{background:var(--s1);color:var(--text);border-color:var(--border3)}
+.detail-title{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--sub);transition:color .3s}
+.det-badge{margin-left:auto;font-family:'DM Mono',monospace;font-size:10px;padding:4px 12px;border-radius:20px;background:var(--gdim);color:var(--gold);border:1px solid rgba(200,169,78,.2)}
+.detail-inner{max-width:960px;margin:0 auto;padding:36px 36px 0}
 
-  .btn-main {
-    background: var(--accent);
-    color: #0A1628;
-    border: none;
-    padding: 14px 36px;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 700;
-    font-family: 'Syne', sans-serif;
-    cursor: pointer;
-    letter-spacing: 0.5px;
-    transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
-    box-shadow: 0 4px 24px rgba(245,166,35,0.25);
-    position: relative;
-    overflow: hidden;
-  }
+/* TAB BAR */
+.tabs{display:flex;gap:4px;padding:4px;background:var(--s1);border:1px solid var(--border);border-radius:10px;margin-bottom:28px;overflow-x:auto}
+.tab{flex:1;min-width:120px;display:flex;align-items:center;justify-content:center;gap:7px;padding:9px 14px;border-radius:7px;border:none;background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12.5px;font-weight:500;color:var(--sub);transition:all .18s;white-space:nowrap}
+.tab:hover{background:var(--s2);color:var(--text)}
+.tab.active{background:var(--s0);color:var(--text);border:1px solid var(--border2);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.tab-ico{font-size:14px}
+.tab-ct{font-family:'DM Mono',monospace;font-size:10px;padding:1px 6px;border-radius:10px;background:var(--gdim);color:var(--gold)}
 
-  .btn-main:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(245,166,35,0.4);
-    background: #ffcf6b;
-  }
+/* PANEL */
+.panel{display:none}
+.panel.active{display:block;animation:fadeUp .35s ease both}
 
-  .btn-main:active { transform: translateY(0); }
+/* SEC & CARDS (reused) */
+.sec{background:var(--s0);border:1px solid var(--border);border-radius:11px;overflow:hidden;transition:border-color .2s,background .3s}
+.sec:hover{border-color:var(--border2)}
+.sec-head{display:flex;align-items:center;gap:14px;padding:15px 20px;background:var(--s1);border-bottom:1px solid var(--border);transition:background .3s,border-color .3s}
+.sico{width:30px;height:30px;border-radius:7px;background:var(--s2);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.slbl{flex:1;font-size:13px;font-weight:600;letter-spacing:.1px;color:var(--text);transition:color .3s}
+.badge{font-family:'DM Mono',monospace;font-size:9.5px;padding:3px 10px;border-radius:20px}
+.badge.am{background:var(--gdim);color:var(--gold);border:1px solid rgba(200,169,78,.2)}
+.badge.bl{background:rgba(82,197,213,.07);color:var(--cyan);border:1px solid rgba(82,197,213,.16)}
+.cards{padding:8px;display:flex;flex-direction:column;gap:4px}
+.card{background:var(--s1);border:1px solid var(--border);border-radius:7px;padding:13px 15px;transition:all .17s;display:flex;flex-direction:column;gap:8px}
+.card:hover{border-color:var(--chb);background:var(--s2);transform:translateX(3px)}
+.ctop{display:flex;align-items:flex-start;gap:9px}
+.cnum{font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);opacity:.6;flex-shrink:0;padding-top:1px}
+.ctit{font-size:13.5px;font-weight:500;color:var(--text);line-height:1.4;flex:1;transition:color .3s}
+.cbot{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.tag{font-family:'DM Mono',monospace;font-size:9.5px;padding:2px 8px;border-radius:4px;border:1px solid;white-space:nowrap}
+.tag.op{background:rgba(82,197,213,.06);color:var(--cyan);border-color:rgba(82,197,213,.18)}
+.tag.mg{background:rgba(61,214,140,.06);color:var(--ok);border-color:rgba(61,214,140,.18)}
+.tag.xj{background:rgba(152,121,240,.07);color:var(--violet);border-color:rgba(152,121,240,.2)}
+.tag.sr{background:rgba(82,197,213,.05);color:var(--cyan);border-color:rgba(82,197,213,.12)}
+.cwho{font-family:'DM Mono',monospace;font-size:10.5px;color:var(--dim)}
+.cts{font-family:'DM Mono',monospace;font-size:10.5px;color:var(--dim);margin-left:auto}
+.cnote{font-family:'DM Mono',monospace;font-size:11px;color:var(--sub);border-top:1px solid var(--border);padding-top:8px;line-height:1.55}
+.rn{padding:18px 22px;font-family:'DM Mono',monospace;font-size:12.5px;line-height:1.82;color:var(--sub);white-space:pre-wrap;border-top:1px solid var(--border)}
+.slack-list{padding:6px 8px;display:flex;flex-direction:column;gap:2px}
+.smsg{display:flex;gap:12px;padding:10px 12px;border-radius:7px;transition:background .15s}
+.smsg:hover{background:var(--s2)}
+.av{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--violet),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;color:#fff}
+.su{font-size:12px;font-weight:600;color:var(--gold);margin-bottom:3px}
+.st{font-size:13px;color:var(--sub);line-height:1.55;word-break:break-word}
+.empty{padding:32px 22px;text-align:center;color:var(--dim);font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.4px}
+.err-box{background:rgba(240,108,108,.05);border:1px solid rgba(240,108,108,.15);border-radius:10px;padding:20px 24px;color:#f4a0a0;font-family:'DM Mono',monospace;font-size:12.5px;line-height:1.75}
+.err-box strong{color:var(--err);font-size:14px;display:block;margin-bottom:8px}
 
-  .btn-main.loading {
-    pointer-events: none;
-    opacity: 0.7;
-  }
+footer{padding:24px 36px;border-top:1px solid var(--border);display:flex;justify-content:space-between;transition:border-color .3s}
+.ftxt{font-size:11.5px;color:var(--dim);font-family:'DM Mono',monospace}
 
-  /* Status bar */
-  #status-bar {
-    display: none;
-    align-items: center;
-    gap: 10px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 12px 20px;
-    margin-bottom: 32px;
-    font-family: 'Space Mono', monospace;
-    font-size: 13px;
-    color: var(--accent2);
-    animation: fadeUp 0.3s ease both;
-  }
-
-  #status-bar.visible { display: flex; }
-
-  .spinner {
-    width: 16px; height: 16px;
-    border: 2px solid rgba(0,180,216,0.2);
-    border-top-color: var(--accent2);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    flex-shrink: 0;
-  }
-
-  /* Results grid */
-  #results {
-    display: none;
-    flex-direction: column;
-    gap: 24px;
-    animation: fadeUp 0.5s ease both;
-  }
-
-  #results.visible { display: flex; }
-
-  /* Section */
-  .section {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-  }
-
-  .section-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 16px 20px;
-    background: var(--surface2);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .section-icon { font-size: 20px; }
-
-  .section-title {
-    font-weight: 700;
-    font-size: 15px;
-    flex: 1;
-  }
-
-  .badge {
-    background: rgba(245,166,35,0.15);
-    color: var(--accent);
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    padding: 3px 10px;
-    border-radius: 20px;
-    border: 1px solid rgba(245,166,35,0.3);
-  }
-
-  .badge.blue {
-    background: rgba(0,180,216,0.1);
-    color: var(--accent2);
-    border-color: rgba(0,180,216,0.25);
-  }
-
-  /* Cards */
-  .cards { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
-
-  .card {
-    background: rgba(10,22,40,0.5);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 8px;
-    padding: 14px 16px;
-    transition: border-color 0.2s, transform 0.15s;
-  }
-
-  .card:hover {
-    border-color: rgba(245,166,35,0.25);
-    transform: translateX(3px);
-  }
-
-  .card-title {
-    font-weight: 700;
-    font-size: 14px;
-    margin-bottom: 6px;
-    color: var(--text);
-  }
-
-  .card-meta {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-
-  .tag {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    padding: 2px 8px;
-    border-radius: 4px;
-    background: rgba(0,180,216,0.12);
-    color: var(--accent2);
-    border: 1px solid rgba(0,180,216,0.2);
-  }
-
-  .tag.green {
-    background: rgba(34,197,94,0.1);
-    color: var(--success);
-    border-color: rgba(34,197,94,0.2);
-  }
-
-  .tag.purple {
-    background: rgba(124,58,237,0.12);
-    color: #a78bfa;
-    border-color: rgba(124,58,237,0.25);
-  }
-
-  .tag.red {
-    background: rgba(239,68,68,0.1);
-    color: var(--danger);
-    border-color: rgba(239,68,68,0.2);
-  }
-
-  .card-user {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-  }
-
-  .card-time {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    margin-left: auto;
-  }
-
-  /* Release notes */
-  .release-notes-content {
-    padding: 16px 20px;
-    font-family: 'Space Mono', monospace;
-    font-size: 13px;
-    line-height: 1.7;
-    color: #c0d0e8;
-    white-space: pre-wrap;
-    border-top: 1px solid var(--border);
-  }
-
-  /* Slack messages */
-  .slack-msg {
-    display: flex;
-    gap: 12px;
-    padding: 12px 16px;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-  }
-
-  .slack-msg:last-child { border-bottom: none; }
-
-  .slack-avatar {
-    width: 32px; height: 32px;
-    border-radius: 6px;
-    background: linear-gradient(135deg, var(--accent3), var(--accent2));
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 700; flex-shrink: 0;
-    color: white;
-  }
-
-  .slack-body { flex: 1; min-width: 0; }
-
-  .slack-user {
-    font-weight: 700;
-    font-size: 13px;
-    color: var(--accent);
-    margin-bottom: 3px;
-  }
-
-  .slack-text {
-    font-size: 13px;
-    color: #c0d0e8;
-    line-height: 1.5;
-    word-break: break-word;
-  }
-
-  /* Empty state */
-  .empty {
-    padding: 28px 20px;
-    text-align: center;
-    color: var(--muted);
-    font-size: 13px;
-    font-family: 'Space Mono', monospace;
-  }
-
-  /* Error state */
-  .error-card {
-    background: rgba(239,68,68,0.07);
-    border: 1px solid rgba(239,68,68,0.2);
-    border-radius: 10px;
-    padding: 20px 24px;
-    color: #fca5a5;
-    font-family: 'Space Mono', monospace;
-    font-size: 13px;
-    line-height: 1.7;
-  }
-
-  .error-card strong { color: var(--danger); font-size: 15px; display: block; margin-bottom: 8px; }
-
-  /* MCP badge */
-  .mcp-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: linear-gradient(90deg, rgba(124,58,237,0.2), rgba(0,180,216,0.15));
-    border: 1px solid rgba(124,58,237,0.3);
-    border-radius: 20px;
-    padding: 4px 14px;
-    font-size: 11px;
-    font-family: 'Space Mono', monospace;
-    color: #a78bfa;
-    margin-left: 8px;
-  }
-
-  /* Animations */
-  @keyframes fadeDown {
-    from { opacity: 0; transform: translateY(-20px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-
-  /* Footer */
-  footer {
-    text-align: center;
-    padding: 40px 0 20px;
-    color: var(--muted);
-    font-size: 12px;
-    font-family: 'Space Mono', monospace;
-    opacity: 0.6;
-  }
+@keyframes slideDown{from{opacity:0;transform:translateY(-18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
 <body>
+<div class="amb"><div class="a1"></div><div class="a2"></div><div class="a3"></div><div class="noise"></div></div>
 
-<div class="container">
-  <header>
-    <div class="logo">🏴‍☠️ Pirates of Coral-bean · Track 2</div>
-    <h1>Dev's First Mate</h1>
-    <p class="subtitle">GitHub + Slack unified via Coral SQL <span class="mcp-tag">⚡ MCP Powered</span></p>
-  </header>
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-left">
+    <div class="lmark">🏴‍☠️</div>
+    <span class="brand">Pirates of Coral-bean · Track 2</span>
+  </div>
+  <div class="nav-right">
+    <div class="spill"><span class="pulse"></span>MCP Connected</div>
+    <div class="tsw" onclick="toggleTheme()" role="button" aria-label="Toggle theme" tabindex="0">
+      <span class="tsw-lbl" id="sw-icon">🌙</span>
+      <div class="trk"><div class="tthumb"></div></div>
+      <span class="tsw-lbl" id="sw-lbl">Dark</span>
+    </div>
+  </div>
+</nav>
 
-  <div class="cta-wrap">
-    <button class="btn-main" id="loadBtn" onclick="loadData()">
-      🔍 What needs my attention today?
-    </button>
+<!-- ── VIEW 1: DASHBOARD ── -->
+<div class="view active" id="view-dash">
+  <div id="dash">
+    <div class="hero">
+      <div class="kicker"><span class="kl"></span>Your developer command center</div>
+      <h1>Dev's <em>First Mate</em></h1>
+      <p class="hdesc">GitHub and Slack, unified through Coral SQL. Surface every issue, PR, and conversation that needs your attention — on demand.</p>
+    </div>
+
+    <div class="stat-grid">
+      <div class="scard"><span class="scard-ico">🐛</span><div class="scard-val" id="st-i">—</div><div class="scard-lbl">Open Issues</div><div class="scard-sub">Needs triage</div></div>
+      <div class="scard"><span class="scard-ico">✅</span><div class="scard-val" id="st-p">—</div><div class="scard-lbl">Merged PRs</div><div class="scard-sub">Recently closed</div></div>
+      <div class="scard"><span class="scard-ico">⚡</span><div class="scard-val" id="st-j">—</div><div class="scard-lbl">Cross-Joins</div><div class="scard-sub">GitHub ↔ Slack</div></div>
+      <div class="scard"><span class="scard-ico">💬</span><div class="scard-val" id="st-s">—</div><div class="scard-lbl">Slack Msgs</div><div class="scard-sub">Latest activity</div></div>
+    </div>
+
+    <div class="div"></div>
+
+    <div class="cta-area">
+      <button class="btn-main" id="loadBtn" onclick="loadData()">
+        <span>✦</span> What needs my attention today?
+      </button>
+      <div class="cta-note">
+        <span>Powered by <strong style="font-weight:500;color:var(--sub)">Coral cross-source JOIN</strong></span>
+        <span>GitHub · Slack · unified in one query</span>
+      </div>
+    </div>
+    <div id="sbar"><div class="spin"></div><span id="stxt">Querying Coral across GitHub + Slack…</span></div>
+
+    <div class="features">
+      <div class="feat"><div class="feat-ico">🔗</div><div class="feat-title">Cross-source JOIN</div><div class="feat-desc">Coral SQL merges GitHub issues with Slack threads in a single query</div></div>
+      <div class="feat"><div class="feat-ico">📝</div><div class="feat-title">Auto release notes</div><div class="feat-desc">Merged PRs are summarised into ready-to-ship release notes via AI</div></div>
+      <div class="feat"><div class="feat-ico">⚡</div><div class="feat-title">Real-time digest</div><div class="feat-desc">One click fetches live data — no stale cache, no manual refresh needed</div></div>
+    </div>
   </div>
 
-  <div id="status-bar">
-    <div class="spinner"></div>
-    <span id="status-text">Querying Coral across GitHub + Slack...</span>
+  <footer>
+    <span class="ftxt">Dev's First Mate — WeMakeDevs Hackathon</span>
+    <span class="ftxt">Built with Coral MCP</span>
+  </footer>
+</div>
+
+<!-- ── VIEW 2: DETAIL ── -->
+<div class="view" id="view-detail">
+  <div class="detail-nav">
+    <button class="back-btn" onclick="showDash()">← Back to Dashboard</button>
+    <span class="detail-title">Attention Digest</span>
+    <span class="det-badge" id="det-ts">—</span>
   </div>
-
-  <div id="results"></div>
-
-  <footer>Built with ❤️ for WeMakeDevs Hackathon · Powered by Coral</footer>
+  <div class="detail-inner">
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('issues',this)"><span class="tab-ico">🐛</span>Issues<span class="tab-ct" id="tc-i">0</span></button>
+      <button class="tab" onclick="switchTab('prs',this)"><span class="tab-ico">✅</span>Merged PRs<span class="tab-ct" id="tc-p">0</span></button>
+      <button class="tab" onclick="switchTab('joins',this)"><span class="tab-ico">⚡</span>Cross-JOIN<span class="tab-ct" id="tc-j">0</span></button>
+      <button class="tab" onclick="switchTab('slack',this)"><span class="tab-ico">💬</span>Slack<span class="tab-ct" id="tc-s">0</span></button>
+      <button class="tab" onclick="switchTab('notes',this)" id="tab-notes" style="display:none"><span class="tab-ico">📝</span>Release Notes</button>
+    </div>
+    <div id="panel-issues" class="panel active"></div>
+    <div id="panel-prs" class="panel"></div>
+    <div id="panel-joins" class="panel"></div>
+    <div id="panel-slack" class="panel"></div>
+    <div id="panel-notes" class="panel"></div>
+  </div>
+  <footer style="margin-top:60px">
+    <span class="ftxt">Dev's First Mate — WeMakeDevs Hackathon</span>
+    <span class="ftxt">Built with Coral MCP</span>
+  </footer>
 </div>
 
 <script>
-function formatTime(ts) {
-  if (!ts) return '';
-  const d = new Date(ts);
-  return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+/* THEME */
+function toggleTheme(){
+  const h=document.documentElement,l=h.dataset.theme==='light';
+  h.dataset.theme=l?'dark':'light';
+  document.getElementById('sw-icon').textContent=l?'🌙':'☀️';
+  document.getElementById('sw-lbl').textContent=l?'Dark':'Light';
+  localStorage.setItem('dfm-t',h.dataset.theme);
+}
+(()=>{const s=localStorage.getItem('dfm-t');if(s==='light'){document.documentElement.dataset.theme='light';document.getElementById('sw-icon').textContent='☀️';document.getElementById('sw-lbl').textContent='Light';}})();
+
+/* VIEWS */
+function showDash(){document.getElementById('view-dash').classList.add('active');document.getElementById('view-detail').classList.remove('active');window.scrollTo({top:0,behavior:'smooth'})}
+function showDetail(){document.getElementById('view-dash').classList.remove('active');document.getElementById('view-detail').classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
+
+/* TABS */
+function switchTab(id,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('panel-'+id).classList.add('active');
 }
 
-function initials(name) {
-  return (name || '?').split(/[\s_-]/)[0].slice(0,2).toUpperCase();
+/* UTILS */
+function fmt(ts){if(!ts)return'';return new Date(ts).toLocaleDateString('en-IN',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}
+function ini(n){return(n||'?').split(/[\s_-]/)[0].slice(0,2).toUpperCase()}
+
+/* RENDERERS */
+function rIssues(d){
+  if(!d||!d.length)return'<div class="empty">✓ No open issues — you\'re clear!</div>';
+  return'<div class="sec"><div class="sec-head"><div class="sico">🐛</div><span class="slbl">Open Issues Needing Triage</span><span class="badge am">'+d.length+' issues</span></div><div class="cards">'+d.map(i=>`<div class="card"><div class="ctop"><span class="cnum">#${i.number}</span><span class="ctit">${i.title}</span></div><div class="cbot"><span class="tag op">open</span><span class="cwho">@${i.user_login||'unknown'}</span><span class="cts">${fmt(i.created_at)}</span></div></div>`).join('')+'</div></div>'
+}
+function rPRs(d){
+  if(!d||!d.length)return'<div class="empty">No recently merged PRs found.</div>';
+  return'<div class="sec"><div class="sec-head"><div class="sico">✅</div><span class="slbl">Recently Merged PRs</span><span class="badge am">'+d.length+' merged</span></div><div class="cards">'+d.map(p=>`<div class="card"><div class="ctop"><span class="cnum">#${p.number}</span><span class="ctit">${p.title}</span></div><div class="cbot"><span class="tag mg">merged</span><span class="cwho">@${p.user_login||'unknown'}</span><span class="cts">${fmt(p.merged_at)}</span></div></div>`).join('')+'</div></div>'
+}
+function rSlack(d){
+  if(!d||!d.length)return'<div class="empty">No Slack messages found.</div>';
+  return'<div class="sec"><div class="sec-head"><div class="sico">💬</div><span class="slbl">Recent Slack Activity</span><span class="badge bl">'+d.length+' messages</span></div><div class="slack-list">'+d.map(m=>`<div class="smsg"><div class="av">${ini(m.user||m.username)}</div><div><div class="su">${m.user||m.username||'Unknown'}</div><div class="st">${m.text||''}</div></div></div>`).join('')+'</div></div>'
+}
+function rJoin(d){
+  if(!d||!d.length)return'<div class="empty">No cross-source matches found.</div>';
+  return'<div class="sec"><div class="sec-head"><div class="sico">⚡</div><span class="slbl">Cross-Source JOIN: GitHub ↔ Slack</span><span class="badge bl">'+d.length+' matches</span></div><div class="cards">'+d.map(r=>`<div class="card"><div class="ctop"><span class="cnum">#${r.number}</span><span class="ctit">${r.title}</span></div><div class="cbot"><span class="tag xj">cross-join</span><span class="tag sr">GitHub ↔ Slack</span></div>${r.slack_discussion?`<div class="cnote">💬 ${r.slack_discussion}</div>`:''}</div>`).join('')+'</div></div>'
 }
 
-function renderIssues(issues) {
-  if (!issues || issues.length === 0) return '<div class="empty">✓ No open issues — you\'re clear!</div>';
-  return '<div class="cards">' + issues.map(i => `
-    <div class="card">
-      <div class="card-title">#${i.number} — ${i.title}</div>
-      <div class="card-meta">
-        <span class="tag">open</span>
-        <span class="card-user">@${i.user_login || 'unknown'}</span>
-        <span class="card-time">${formatTime(i.created_at)}</span>
-      </div>
-    </div>
-  `).join('') + '</div>';
-}
-
-function renderPRs(prs) {
-  if (!prs || prs.length === 0) return '<div class="empty">No recently merged PRs found.</div>';
-  return '<div class="cards">' + prs.map(p => `
-    <div class="card">
-      <div class="card-title">#${p.number} — ${p.title}</div>
-      <div class="card-meta">
-        <span class="tag green">merged</span>
-        <span class="card-user">@${p.user_login || 'unknown'}</span>
-        <span class="card-time">${formatTime(p.merged_at)}</span>
-      </div>
-    </div>
-  `).join('') + '</div>';
-}
-
-function renderSlack(messages) {
-  if (!messages || messages.length === 0) return '<div class="empty">No Slack messages found in configured channel.</div>';
-  return messages.map(m => `
-    <div class="slack-msg">
-      <div class="slack-avatar">${initials(m.user || m.username)}</div>
-      <div class="slack-body">
-        <div class="slack-user">${m.user || m.username || 'Unknown'}</div>
-        <div class="slack-text">${m.text || ''}</div>
-      </div>
-    </div>
-  `).join('');
-}
-
-function renderJoin(rows) {
-  if (!rows || rows.length === 0) return '<div class="empty">No cross-source matches found.</div>';
-  return '<div class="cards">' + rows.map(r => `
-    <div class="card">
-      <div class="card-title">#${r.number} — ${r.title}</div>
-      <div class="card-meta">
-        <span class="tag purple">cross-join</span>
-        <span class="tag blue">GitHub ↔ Slack</span>
-      </div>
-      ${r.slack_discussion ? `<div style="margin-top:8px;font-size:12px;color:var(--muted);font-family:'Space Mono',monospace;">💬 ${r.slack_discussion}</div>` : ''}
-    </div>
-  `).join('') + '</div>';
-}
-
-async function loadData() {
-  const btn = document.getElementById('loadBtn');
-  const statusBar = document.getElementById('status-bar');
-  const statusText = document.getElementById('status-text');
-  const results = document.getElementById('results');
-
-  btn.classList.add('loading');
-  btn.textContent = '⏳ Loading...';
-  statusBar.classList.add('visible');
-  results.classList.remove('visible');
-  results.innerHTML = '';
-
-  const steps = [
-    'Querying Coral across GitHub + Slack...',
-    'Running cross-source JOIN...',
-    'Drafting release notes...',
-    'Assembling your attention digest...'
-  ];
-  let si = 0;
-  const stepTimer = setInterval(() => {
-    si = (si + 1) % steps.length;
-    statusText.textContent = steps[si];
-  }, 1200);
-
-  try {
-    const res = await fetch('/api/attention');
-    const data = await res.json();
-
-    clearInterval(stepTimer);
-    statusBar.classList.remove('visible');
-    btn.classList.remove('loading');
-    btn.textContent = '🔄 Refresh';
-
-    if (data.error) {
-      results.innerHTML = `<div class="error-card"><strong>⚠️ Error</strong>${data.error}<br><br>Make sure Coral is running and your .env is configured correctly.</div>`;
-      results.classList.add('visible');
-      return;
+/* LOAD */
+let cache=null;
+async function loadData(){
+  const btn=document.getElementById('loadBtn'),bar=document.getElementById('sbar'),txt=document.getElementById('stxt');
+  btn.classList.add('loading');btn.innerHTML='<span>⏳</span> Loading…';
+  bar.classList.add('on');
+  const steps=['Querying Coral across GitHub + Slack…','Running cross-source JOIN…','Drafting release notes…','Assembling your digest…'];
+  let si=0;const ti=setInterval(()=>{txt.textContent=steps[si=(si+1)%steps.length]},1200);
+  try{
+    const r=await fetch('/api/attention');const d=await r.json();
+    clearInterval(ti);bar.classList.remove('on');
+    btn.classList.remove('loading');btn.innerHTML='<span>↺</span> Refresh & View';
+    if(d.error){alert('Error: '+d.error);return;}
+    cache=d;
+    /* update stat cards */
+    document.getElementById('st-i').textContent=(d.issues||[]).length;
+    document.getElementById('st-p').textContent=(d.prs||[]).length;
+    document.getElementById('st-j').textContent=(d.cross_join||[]).length;
+    document.getElementById('st-s').textContent=(d.slack||[]).length;
+    /* fill detail panels */
+    document.getElementById('panel-issues').innerHTML=rIssues(d.issues);
+    document.getElementById('panel-prs').innerHTML=rPRs(d.prs);
+    document.getElementById('panel-joins').innerHTML=rJoin(d.cross_join);
+    document.getElementById('panel-slack').innerHTML=rSlack(d.slack);
+    if(d.release_notes){
+      document.getElementById('panel-notes').innerHTML=`<div class="sec"><div class="sec-head"><div class="sico">📝</div><span class="slbl">Auto-Drafted Release Notes</span><span class="badge am">AI Generated</span></div><div class="rn">${d.release_notes}</div></div>`;
+      document.getElementById('tab-notes').style.display='';
     }
-
-    results.innerHTML = `
-      <div class="section">
-        <div class="section-header">
-          <span class="section-icon">🐛</span>
-          <span class="section-title">Open Issues Needing Triage</span>
-          <span class="badge">${(data.issues || []).length} issues</span>
-        </div>
-        ${renderIssues(data.issues)}
-      </div>
-
-      <div class="section">
-        <div class="section-header">
-          <span class="section-icon">✅</span>
-          <span class="section-title">Recently Merged PRs</span>
-          <span class="badge">${(data.prs || []).length} merged</span>
-        </div>
-        ${renderPRs(data.prs)}
-      </div>
-
-      <div class="section">
-        <div class="section-header">
-          <span class="section-icon">⚡</span>
-          <span class="section-title">Cross-Source JOIN: GitHub ↔ Slack</span>
-          <span class="badge blue">Coral Superpower</span>
-        </div>
-        ${renderJoin(data.cross_join)}
-      </div>
-
-      <div class="section">
-        <div class="section-header">
-          <span class="section-icon">💬</span>
-          <span class="section-title">Recent Slack Activity</span>
-          <span class="badge blue">${(data.slack || []).length} messages</span>
-        </div>
-        ${renderSlack(data.slack)}
-      </div>
-
-      ${data.release_notes ? `
-      <div class="section">
-        <div class="section-header">
-          <span class="section-icon">📝</span>
-          <span class="section-title">Auto-Drafted Release Notes</span>
-          <span class="badge">AI Generated</span>
-        </div>
-        <div class="release-notes-content">${data.release_notes}</div>
-      </div>` : ''}
-    `;
-
-    results.classList.add('visible');
-
-  } catch (err) {
-    clearInterval(stepTimer);
-    statusBar.classList.remove('visible');
-    btn.classList.remove('loading');
-    btn.textContent = '🔍 What needs my attention today?';
-    results.innerHTML = `<div class="error-card"><strong>⚠️ Could not connect to backend</strong>Make sure <code>python app.py</code> is running on port 5000.<br><br>${err.message}</div>`;
-    results.classList.add('visible');
+    /* tab counts */
+    document.getElementById('tc-i').textContent=(d.issues||[]).length;
+    document.getElementById('tc-p').textContent=(d.prs||[]).length;
+    document.getElementById('tc-j').textContent=(d.cross_join||[]).length;
+    document.getElementById('tc-s').textContent=(d.slack||[]).length;
+    document.getElementById('det-ts').textContent='Updated '+new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+    /* navigate */
+    showDetail();
+  }catch(e){
+    clearInterval(ti);bar.classList.remove('on');
+    btn.classList.remove('loading');btn.innerHTML='<span>✦</span> What needs my attention today?';
+    document.getElementById('panel-issues').innerHTML=`<div class="err-box"><strong>⚠ Could not connect</strong>Make sure <code>python app.py</code> is running on port 5000.<br><br>${e.message}</div>`;
+    showDetail();
   }
 }
 </script>
