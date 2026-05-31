@@ -14,6 +14,7 @@ GITHUB_REPO   = os.getenv('GITHUB_REPO', 'devs_first_mate')
 SLACK_CHANNEL = os.getenv('SLACK_CHANNEL_ID', 'YOUR_CHANNEL_ID')
 
 
+
 def run_coral(query):
     try:
         result = subprocess.run(
